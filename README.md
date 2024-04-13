@@ -1,5 +1,5 @@
 # IMDBSimplon
-Pour lancer l'application, exécuter depuis el dossier racine :
+Pour lancer l'application, exécuter depuis le dossier racine :
 ```bat
 docker build -t imdb .
 docker run -it -p 127.0.0.1:4000:80 -e MODEL=rf imdb
