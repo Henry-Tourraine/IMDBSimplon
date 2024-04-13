@@ -16,4 +16,4 @@ La prédiction se fait à partir de l'ensemble des colonnes sauf :
 - "gross"
 - "movie_fb_likes"
 
-L'algorithme Random forest est "fit" une première fois puis il est enregistré avec pickle et rechargé à chaque fois.
+L'algorithme Random forest est "fit" une première fois puis il est enregistré avec pickle et rechargé à chaque prédiction.
