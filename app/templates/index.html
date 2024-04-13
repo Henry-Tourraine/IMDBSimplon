@@ -1,0 +1,68 @@
+<html>
+<head>
+    <title>Item Details</title>
+</head>
+<body>
+    <h1>Choisissez un film</h1>
+    <select></select>
+    <h2>Appréciation :  ("awful", "bad", "average", "interesting", "good" )</h2>
+    <div id="resultWrapper">
+        <div class="score">prédite : <div id="result"></div></div>
+        <div class="score">réelle : <div id="real"></div></div>
+    </div>
+    <style>
+        #resultWrapper{
+            display: flex;
+            flex-flow: wrap column;
+            justify-content: start;
+            align-items: start;
+            height: 200px;
+        }
+
+        .score{
+            display: flex;
+            flex-flow: wrap row;
+        }
+
+        #real{
+            color: grey
+        }
+    </style>
+</body>
+<script>
+ 
+    
+    window.addEventListener("DOMContentLoaded", async(e)=>{
+
+        let data = await fetch(location.origin +"/score/data", {method: "POST",
+                                        headers: {"Content-Type": "application/json", "Accept": "application/json"}})
+                    .then(e => e.json())
+                    .then(e => {
+                        return e;
+                    });
+        console.log(data);
+        
+        let select = document.querySelector("select");
+        let temp = "";
+        data.directors.map((value, index)=>{
+            temp += `<option value="${value}@@${data.movies[index]}">director : ${value} & movie : ${data.movies[index]}</option>`;
+        });
+        select.innerHTML = temp;
+        
+        document.querySelector("select").addEventListener("change", async(event) =>{
+            let [director, movie] = event.target.value.split("@@");
+            console.log(director, movie);
+            await fetch("/score/guess", {method: "POST", 
+                                        body: JSON.stringify({"director_name": director, "movie_title": movie}),
+                                        headers: {"Content-Type": "application/json", "Accept": "application/json"}})
+            .then(e => e.json())
+            .then(e => {
+                console.log("result ", e);
+                document.querySelector("#result").textContent = e[1];
+                document.querySelector("#real").textContent = e[0];
+            })
+        })
+    });
+    
+</script>
+</html>
